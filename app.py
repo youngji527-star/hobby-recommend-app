@@ -165,9 +165,20 @@ if submitted:
                 score += 1
         scores.append(score)
     
-    # 최고 점수를 받은 취미 선택
-    best_match_idx = scores.index(max(scores))
-    recommendation = hobbies[best_match_idx]
+   # 점수순으로 정렬하여 상위 3개 추출
+    import numpy as np
+    indexed_scores = list(enumerate(scores))
+    sorted_scores = sorted(indexed_scores, key=lambda x: x[1], reverse=True)
+    top_3_indices = [x[0] for x in sorted_scores[:3]]
+
+    st.balloons()
+    st.header("✨ 당신에게 어울리는 취미 TOP 3")
+    
+    for idx in top_3_indices:
+        rec = hobbies[idx]
+        with st.expander(f"🏆 추천: {rec['name']} (매칭 점수: {scores[idx]}/6)", expanded=True):
+            st.write(f"**어떤 취미인가요?** {rec['description']}")
+            st.info(f"**추천 이유:** {rec['reason']}")
 
     # 4. 결과 출력
     st.balloons()
